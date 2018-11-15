@@ -1,6 +1,6 @@
 {
     "env": {
-        "MONGO_ATLAS_PW": "pepsicola-123",
-        "JWT_KEY":"ED2SecretKey"
+        "MONGO_ATLAS_PW": "laboratorio3-API",
+        "JWT_KEY":"ED2URL2018"
     }
 }

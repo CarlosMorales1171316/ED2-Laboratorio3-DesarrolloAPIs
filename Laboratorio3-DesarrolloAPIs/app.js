@@ -5,12 +5,14 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
 const pizzaRoutes = require("./api/routes/pizzas");
-const userRoutes = require("./api/routes/users");
+const clienteRoutes = require("./api/routes/clientes");
 
 mongoose.connect(
-  "mongodb://ED2:" +
-   process.env.MONGO_ATLAS_PW +
-  "@proyectoed2-shard-00-00-o3vlb.mongodb.net:27017,proyectoed2-shard-00-01-o3vlb.mongodb.net:27017,proyectoed2-shard-00-02-o3vlb.mongodb.net:27017/test?ssl=true&replicaSet=ProyectoED2-shard-0&authSource=admin&retryWrites=true",
+  //aqui se conecta a nuestro servior y la variable process.env.MONGO_ATLAS_PW es donde esta nuestra 
+  //contraseña del servidor situado en el json de "nodemon.json"
+  "mongodb://ED2_Laboratorio3:" +
+  process.env.MONGO_ATLAS_PW + 
+    "@laboratorio3-shard-00-00-hsqcz.mongodb.net:27017,laboratorio3-shard-00-01-hsqcz.mongodb.net:27017,laboratorio3-shard-00-02-hsqcz.mongodb.net:27017/test?ssl=true&replicaSet=Laboratorio3-shard-0&authSource=admin&retryWrites=true",
   {
     useMongoClient: true
   }
@@ -38,7 +40,7 @@ app.use((req, res, next) => {
 
 // Rutas-Manejador de Request
 app.use("/pizzas", pizzaRoutes);
-app.use("/users", userRoutes);
+app.use("/clientes", clienteRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");

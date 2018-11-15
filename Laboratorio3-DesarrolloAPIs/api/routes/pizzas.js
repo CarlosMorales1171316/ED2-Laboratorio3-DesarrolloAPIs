@@ -1,12 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const multer = require("multer");
-const verificarAutenticacion = require('../middleware/verificar_autorizacion');
 
 const Pizza = require("../models/pizza")
 
-//metodo get que obtiene todas las pizzas
+//metodo GET que obtiene todas las pizzas
 router.get("/", (req, res, next) => {
   Pizza.find()
     .select("_id Nombre Descripción Ingredientes TipoDeMasa Tamaño NumeroDePorciones ExtraQueso")
@@ -44,7 +42,7 @@ router.get("/", (req, res, next) => {
 });
 
 
-//metodo post que ingresa pizzas
+//metodo POST que ingresa pizzas
 router.post("/", (req, res, next) => {
   const pizza = new Pizza({
     _id: new mongoose.Types.ObjectId(),
@@ -80,7 +78,7 @@ router.post("/", (req, res, next) => {
 });
 
 
-//metodo get que obtiene un mensaje especifico al ingresar un ID del mensaje a buscar
+//metodo GET que obtiene un mensaje especifico al ingresar un ID del mensaje a buscar
 router.get("/:pizzaId", (req, res, next) => {
   const id = req.params.pizzaId;
   Pizza.findById(id)
@@ -102,7 +100,7 @@ router.get("/:pizzaId", (req, res, next) => {
     });
 });
 
-//metodo que elimina una pizza al ingresar el ID de la pizza a eliminar
+//metodo DELETE que elimina una pizza al ingresar el ID de la pizza a eliminar
 router.delete("/:pizzaId", (req, res, next) => {
   const id = req.params.pizzaId;
   Pizza.remove({ _id: id })
@@ -120,7 +118,7 @@ router.delete("/:pizzaId", (req, res, next) => {
     });
 });
 
-//metodo que actualiza una pizza al ingresar el ID de la pizza a actualizar/crear
+//metodo PUT que actualiza una pizza al ingresar el ID de la pizza a actualizar/crear
 router.put('/:pizzaId', function (req, res) {
   Pizza.findByIdAndUpdate(req.params.pizzaId,
      req.body,

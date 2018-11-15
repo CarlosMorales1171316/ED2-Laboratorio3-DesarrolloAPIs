@@ -2,24 +2,25 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
-const verificarAutenticacion = require('../middleware/verificar_autorizacion');
+const Cliente = require('../models/cliente');
 
-//metodo get que obtiene todos los usuarios
-router.get("/", verificarAutenticacion, (req, res, next) => {
-    User.find()
-      .select("_id Username Nombre Correo")
+
+//metodo GET que obtiene todos los clientes de la pizzeria
+router.get("/",(req, res, next) => {
+    Cliente.find()
+      .select("_id Nombre Correo Residencia ClienteFrecuente")
       .exec()
       .then(docs => {
         const response = {
-          users: docs.map(doc => {
+          clientes: docs.map(doc => {
             return {
               _id: doc._id,
-              Username: doc.Username,
               Nombre: doc.Nombre,
-              Correo: doc.Correo
+              Correo: doc.Correo,
+              Residencia: doc.Residencia,
+              ClienteFrecuente: doc.ClienteFrecuente
             };
           })
         };
@@ -27,7 +28,7 @@ router.get("/", verificarAutenticacion, (req, res, next) => {
         res.status(200).json(docs);
         //   } else {
         //       res.status(404).json({
-        //           mensaje: 'Sin Usuarios en el servidor'
+        //           mensaje: 'Sin clientes en el servidor'
         //       });
         //   }
       })
@@ -39,35 +40,31 @@ router.get("/", verificarAutenticacion, (req, res, next) => {
       });
   });
 
-//crear usuarios
+//metodo POST que registra los clientes para la pizzeria
 router.post('/registrarse', (req,res,next)=> {
-    User.find({Username: req.body.Username})
+    Cliente.find({Correo: req.body.Correo})
     .exec()
-    .then(user => {
-        if(user.length >=1 ){
-            return res.status(422).json({
-                message: 'Username ya existente, intente con otro'
-            });
-        } else {
+    .then(cliente => {
             bcrypt.hash(req.body.Contraseña,10,(err, hash)=> {
                 if(err){
                     return res.status(500).json({
                         error: err
                     });
                 } else {
-                    const user = new User({
+                    const cliente = new Cliente({
                         _id: new mongoose.Types.ObjectId(),
-                        Username: req.body.Username,
+                        Nombre: req.body.Nombre,
+                        Correo: req.body.Correo,
                         //Contraseña: req.body.Contraseña
                         Contraseña: hash,
-                        Nombre: req.body.Nombre,
-                        Correo: req.body.Correo
+                        Residencia: req.body.Residencia,
+                        ClienteFrecuente: req.body.ClienteFrecuente
                     });
-                    user.save()
+                    cliente.save()
                     .then(result => {
                         console.log(result);
                         res.status(201).json({
-                            message: "¡Usuario creado con exito!"
+                            message: "¡Cliente creado con exito!"
                         });
                     })
                     .catch(err => {
@@ -78,16 +75,15 @@ router.post('/registrarse', (req,res,next)=> {
                     });
                 }
             })
-        }
-    }) 
-});
+        })
+    });
 
-
+//metodo POST que inicia sesion 
 router.post('/login', (req , res, next) => {
-    User.find({Username: req.body.Username})
+    Cliente.find({Correo: req.body.Correo})
     .exec()
-    .then(user => {
-        if(user.length < 1) {
+    .then(cliente => {
+        if(cliente.length < 1) {
             return res.status(401).json({
                 message: '¡No Autorizado!'
             });
@@ -100,13 +96,14 @@ router.post('/login', (req , res, next) => {
             } 
             if (result) {
                 const token = jwt.sign({
-                    Username: user[0].Username,
+                    Correo: user[0].Correo,
                     _id: user[0]._id
                 },
                  process.env.JWT_KEY,
                   {
                       //tiempo de expiración
-                      expiresIn: '1m'
+                      //1 hora (se puede cambiar)
+                      expiresIn: '1h'
                  }
                  );
                 return res.status(200).json({
@@ -115,7 +112,7 @@ router.post('/login', (req , res, next) => {
                 });
             }
             return res.status(401).json({
-                message: 'Username/Contraseña incorrecto'
+                message: 'Correo/Contraseña incorrecto'
             }); 
         });
     })
@@ -128,14 +125,14 @@ router.post('/login', (req , res, next) => {
 });
 
 
-//borrar usuarios
+//metodo DELETE que elimina un usuario de la pizzeria
 router.delete('/:userId', (req,res,next) => {
-    const id = req.params.userId;
-    User.remove({ _id: req.param.userId})
+    const id = req.params.clienteId;
+    Cliente.remove({ _id: req.param.clienteId})
     .exec()                                                                                                    
     .then(result => {
         res.status(200).json({
-            message: "El usuario con id "+id +" ha sido eliminado"
+            message: "El cliente con id "+id +" ha sido eliminado"
         });
     })
     .catch(err => {
