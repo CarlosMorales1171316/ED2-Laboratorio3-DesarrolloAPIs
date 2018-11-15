@@ -1,9 +1,7 @@
 # ED2-Laboratorio3-DesarrolloAPIs
 
 -Carlos Andrés Morales Lara - 1171316
-
 -Iván Andrés Morales Lara - 1158116
-
 Laboratorio#3-Desarrollo de APIs
 
 Para poder observar nuestro servidor porfavor ingresar al siguiente link:
@@ -12,7 +10,7 @@ https://cloud.mongodb.com/user?n=%2Fv2%2F5be0b7cecf09a2a707f6de92&nextHash=%23me
 Username: ED2_Laboratorio3@outlook.com
 Password: laboratorio3-API  
     Ahi se podrá ver nuestro servidor que tiene nuestro cluster con nuestras colecciones para trabajar, dentro de esas colecciones ya se encuentran documentos de prueba para poder probar el lab o simplemente para ver que si se conecta con nuestro API. 
- 
+
  La cuenta ADMIN de nuestro cluster es:
 Username: ED2_Laboratorio3
 Password: laboratorio3-API
