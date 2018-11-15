@@ -118,7 +118,7 @@ router.delete("/:pizzaId", (req, res, next) => {
     });
 });
 
-//metodo PUT que actualiza una pizza al ingresar el ID de la pizza a actualizar/crear
+//metodo PUT que actualiza una pizza al ingresar el ID de la pizza a actualizar
 router.put('/:pizzaId', function (req, res) {
   Pizza.findByIdAndUpdate(req.params.pizzaId,
      req.body,

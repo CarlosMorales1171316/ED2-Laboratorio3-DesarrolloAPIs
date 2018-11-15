@@ -88,7 +88,7 @@ router.post('/login', (req , res, next) => {
                 message: '¡No Autorizado!'
             });
         } 
-        bcrypt.compare(req.body.Contraseña, user[0].Contraseña, (err, result) => {
+        bcrypt.compare(req.body.Contraseña, cliente[0].Contraseña, (err, result) => {
             if (err) {
                 return res.status(401).json({
                     message: '¡No Autorizado!'
@@ -96,8 +96,11 @@ router.post('/login', (req , res, next) => {
             } 
             if (result) {
                 const token = jwt.sign({
-                    Correo: user[0].Correo,
-                    _id: user[0]._id
+                    _id: cliente[0]._id,
+                    Nombre: cliente[0].Nombre,
+                    Correo: cliente[0].Correo,
+                    Residencia: cliente[0].Residencia,
+                    ClienteFrecuente: cliente[0].ClienteFrecuente
                 },
                  process.env.JWT_KEY,
                   {
