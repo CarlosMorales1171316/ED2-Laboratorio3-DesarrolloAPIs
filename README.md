@@ -16,5 +16,6 @@ Password: laboratorio3-API
  La cuenta ADMIN de nuestro cluster es:
 Username: ED2_Laboratorio3
 Password: laboratorio3-API
+
    Se recomienda usar un IDE para probar nuestro laboratorio como "POSTMAN" en el cual trabajamos para hacer las peticiones al servidor (GET, POST, PUT, DELETE) y para agregar clientes o pizzas es muy facil crear los json ahí.
 Adentro de nuestro laboratorio tenemos un json llamado "nodemon.json" el cual se encuentra la  contraseña para poder conectarse al servidor y la palabra secreta para el JWT. 
